@@ -21,18 +21,28 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(inflater, container, false)
-        updateWeatherCard()
         return binding.root
     }
 
-    private fun updateWeatherCard() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        apiUser()
+    }
 
-        myViewModel.currentData.observe(this as LifecycleOwner) {
-            binding.apply {
-                tvTemp.text = it.user
+    fun apiUser(){
+        binding.btnUser.setOnClickListener {
+            myViewModel.getWeatherApi()
+            myViewModel.currentData.observe(this as LifecycleOwner) {
+                binding.apply {
+                    tvTemp.text = it.dateGenerated
+                }
             }
             myViewModel.getWeatherApi()
         }
-
     }
+
+//    private fun updateWeatherCard() {
+//
+//
+//
+//    }
 }
