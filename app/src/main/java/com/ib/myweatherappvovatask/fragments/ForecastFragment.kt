@@ -21,6 +21,11 @@ class ForecastFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentForecastBinding.inflate(inflater, container, false)
+        myViewModel.currentData.observe(this as LifecycleOwner) {
+            binding.apply {
+                tvTemp.text = it.user
+            }
+        }
         return binding.root
     }
 
@@ -31,12 +36,7 @@ class ForecastFragment : Fragment() {
     fun apiUser(){
         binding.btnUser.setOnClickListener {
             myViewModel.getWeatherApi()
-            myViewModel.currentData.observe(this as LifecycleOwner) {
-                binding.apply {
-                    tvTemp.text = it.dateGenerated
-                }
-            }
-            myViewModel.getWeatherApi()
+
         }
     }
 
