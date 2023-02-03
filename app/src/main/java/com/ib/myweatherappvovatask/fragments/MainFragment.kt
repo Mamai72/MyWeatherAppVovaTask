@@ -1,12 +1,14 @@
 package com.ib.myweatherappvovatask.fragments
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.ib.myweatherappvovatask.R
+import androidx.lifecycle.LifecycleOwner
 import com.ib.myweatherappvovatask.databinding.FragmentMainBinding
 import com.ib.myweatherappvovatask.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,16 +23,45 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater,container,false)
-        goToForecast()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        goToForecast()
+    }
+
+    private fun saveRequestToTheBase() {
+        if (inputCheck(binding.edSearch.text.toString())){
+            myViewModel.getWeatherApi(binding.edSearch.text.toString())
+            myViewModel.currentData.observe(this as LifecycleOwner) {
+
+                binding.tvWeather.text = it.id.toString()
+//                binding.apply {
+//                    tvWeather.text = it.id.toString()
+//                }
+            }
+            Toast.makeText(requireContext(), "This has been successfully added", Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(requireContext(), "You need to fill out all fields", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun inputCheck(name: String): Boolean {
+return !(TextUtils.isEmpty(name))
     }
 
     private fun goToForecast(){
         binding.imSearch.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .replace(R.id.place_holder, ForecastFragment())
-                .commit()
+            saveRequestToTheBase()
+//            myViewModel.currentData.observe(this as LifecycleOwner) {
+//                binding.apply {
+//                    tvWeather.text = it.id.toString()
+//                }
+//            }
+//            parentFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.place_holder, ForecastFragment())
+//                .commit()
         }
     }
 }

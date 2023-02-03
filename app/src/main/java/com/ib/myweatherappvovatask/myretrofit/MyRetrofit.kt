@@ -1,13 +1,14 @@
 package com.ib.myweatherappvovatask.myretrofit
 
-import com.ib.myweatherappvovatask.data.Weather
-
-import retrofit2.Response
+import com.ib.myweatherappvovatask.data.User
+import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface MyRetrofit {
-    @GET("2022-12-25T00:00:00Z/t_2m:C/52.520551,13.461804/json")
-    suspend fun getInfo(): Response<Weather>
+    @GET("users/{postName}/repos")
+    fun getInfo(@Path("postName") name: String): Call<User>
+
  //   fun getInfo(@Path("London") cityName: String): Call<WeatherDataJson>
  //   fun getInfo(@Path("cityName") cityName: String): Call<List<WeatherData>>
 }

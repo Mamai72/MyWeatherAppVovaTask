@@ -17,7 +17,7 @@ class ApplicationModule {
     fun provideRetrofit(): MyRetrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.meteomatics.com/")
+            .baseUrl("https://api.github.com/")
             .build()
             .create(MyRetrofit::class.java)
     }
